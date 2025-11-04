@@ -2,13 +2,6 @@ require("dotenv").config();
 let express = require("express");
 let app = express();
 
-function loggerMiddleware(req, res, next) {
-  console.log(`${req.method} ${req.path} - ${req.ip}`);
-  next();
-}
-
-app.use(loggerMiddleware);
-
 app.use("/public", express.static(__dirname + "/public"));
 
 app.get("/", function (req, res) {
@@ -21,6 +14,15 @@ app.get("/json", function (req, res) {
     message = message.toUpperCase();
   }
   res.json({ message });
+});
+
+function addCurrentTime(req, res, next) {
+  req.time = new Date().toString();
+  next();
+}
+
+app.get("/now", addCurrentTime, function (req, res) {
+  res.json({ time: req.time });
 });
 
 module.exports = app;
