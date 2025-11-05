@@ -1,6 +1,6 @@
 require("dotenv").config();
-let express = require("express");
-let app = express();
+const express = require("express");
+const app = express();
 
 app.use("/public", express.static(__dirname + "/public"));
 
@@ -25,10 +25,16 @@ app.get("/now", addCurrentTime, function (req, res) {
   res.json({ time: req.time });
 });
 
-// --- New route with route parameter ---
-app.get("/:word/echo", (req, res) => {
+app.get("/:word/echo", function (req, res) {
   const word = req.params.word;
   res.json({ echo: word });
+});
+
+app.get("/name", function (req, res) {
+  const firstName = req.query.first;
+  const lastName = req.query.last;
+  const fullName = `${firstName} ${lastName}`;
+  res.json({ name: fullName });
 });
 
 module.exports = app;
