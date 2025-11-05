@@ -25,4 +25,10 @@ app.get("/now", addCurrentTime, function (req, res) {
   res.json({ time: req.time });
 });
 
+// --- New route with route parameter ---
+app.get("/:word/echo", (req, res) => {
+  const word = req.params.word;
+  res.json({ echo: word });
+});
+
 module.exports = app;
